@@ -7,10 +7,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark-mode">
+    <!-- 全页点击水波纹背景 -->
     <canvas id="rippleCanvas" class="ripple-canvas" aria-hidden="true"></canvas>
+
+    <!-- 首页个人信息卡片 -->
     <div class="main-container" id="mainContainer">
         <div class="profile-card" id="profileCard">
             <div class="profile-card-shell">
+                <!-- 顶部主卡片：头像、姓名、简介和主操作按钮 -->
                 <section class="hero-panel">
                     <div class="hero-topbar">
                         <button id="editToggleBtn" type="button" class="card-link-btn">Edit</button>
@@ -29,6 +33,7 @@
                     </div>
                 </section>
 
+                <!-- 底部联系方式卡片 -->
                 <section class="contacts-panel">
                     <div class="contact-grid">
                         <article class="contact-card">
@@ -90,6 +95,7 @@
         </div>
     </div>
 
+    <!-- 头像选择弹窗：预设头像、本地上传、恢复默认头像 -->
     <div id="avatarPicker" class="avatar-picker" aria-hidden="true">
         <div class="avatar-picker-dialog" role="dialog" aria-modal="true" aria-labelledby="avatarPickerTitle">
             <div class="avatar-picker-header">
@@ -107,7 +113,7 @@
         </div>
     </div>
 
-    <!-- 详细信息页面 -->
+    <!-- 详细信息页面：包含自我介绍、GPA 和获奖展示 -->
     <div id="detailsPage" class="details-page">
         <!-- 左上角返回箭头 -->
         <button id="backToCardBtn" class="back-btn" title="返回卡片页面">
@@ -202,6 +208,7 @@ My goal is to create seamless user experiences and maintainable codebases.</text
         </div>
     </div>
 
+    <!-- 奖项大图预览弹窗 -->
     <div id="awardPreviewModal" class="award-preview-modal" aria-hidden="true">
         <div class="award-preview-dialog" role="dialog" aria-modal="true" aria-label="奖项预览">
             <button id="awardPreviewPrev" type="button" class="award-preview-nav award-preview-prev" aria-label="查看上一张奖项">‹</button>

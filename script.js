@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- 全页水波纹背景 ----------------------------------------------------------
     const rippleCanvas = document.getElementById('rippleCanvas');
     const rippleCtx = rippleCanvas.getContext('2d');
     const maxActiveRipples = 18;
@@ -83,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function spawnReflectedRipple(sourceRipple, edge) {
+        // 反射后的波纹会逐渐减弱，这样边界回弹看起来更自然。
         if (sourceRipple.depth >= maxRippleDepth || sourceRipple.blockedEdge === edge) {
             return;
         }
@@ -178,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', resizeRippleCanvas);
     resizeRippleCanvas();
 
-    // --- 业务功能 ---
+    // --- 页面元素缓存与业务状态 --------------------------------------------------
     const nodes = {
         themeBtn: document.getElementById('themeToggleBtn'),
         editToggle: document.getElementById('editToggleBtn'),
@@ -218,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // 可编辑字段不一定都需要校验，这里只对核心资料做保存前校验。
     const editableFields = ['name', 'bio', 'email', 'phone', 'school'];
     const validationFields = ['name', 'email', 'phone'];
     const personalTextStorageKey = 'profile_personal_text';
@@ -326,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
         nodes.input[field].addEventListener('input', () => clearFieldError(field));
     });
 
-    // 头像
+    // --- 头像管理 ----------------------------------------------------------------
     function formatAvatarLabel(filename) {
         return filename
             .replace('.svg', '')
@@ -448,6 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
         closeAvatarPicker();
     };
     document.addEventListener('keydown', (event) => {
+        // 退出键和方向键同时服务于头像弹窗与奖项预览弹窗。
         if (event.key === 'Escape' && nodes.avatarPicker.classList.contains('active')) {
             closeAvatarPicker();
         }
@@ -462,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 编辑资料
+    // --- 资料编辑 ----------------------------------------------------------------
     nodes.editToggle.onclick = () => {
         editableFields.forEach(key => {
             nodes.input[key].value = nodes.display[key].textContent;
@@ -498,7 +502,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDetailsProfile();
     };
 
-    // 主题切换
+    // --- 主题切换 ----------------------------------------------------------------
     nodes.themeBtn.onclick = () => {
         const isDark = document.body.classList.toggle('dark-mode');
         nodes.themeBtn.textContent = isDark ? "☀️" : "🌙";
@@ -506,7 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ripplePalette = getRipplePalette();
     };
 
-    // 页面跳转逻辑
+    // --- 详情页状态与交互 --------------------------------------------------------
     const viewDetailsBtn = document.getElementById('viewDetailsBtn');
     const backToCardBtn = document.getElementById('backToCardBtn');
     const mainContainer = document.getElementById('mainContainer');
@@ -538,6 +542,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const personalTextArea = document.getElementById('personalTextArea');
     const typewriterText = document.getElementById('typewriterText');
 
+    // 奖项列表由默认图片和用户上传图片两部分组成。
     function getAwardsPageCount() {
         return Math.max(1, Math.ceil(awardFiles.length / awardsPerPage));
     }
@@ -550,7 +555,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             localStorage.setItem(awardsStorageKey, JSON.stringify(uploadedAwardFiles));
         } catch {
-            // Ignore quota issues and keep uploaded awards for the current session.
+            // 如果本地存储空间不足，就只保留当前会话里的上传结果。
         }
     }
 
@@ -569,6 +574,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem(personalTextStorageKey, personalTextArea.value);
     });
 
+    // 同步首页卡片与详情页右上角资料，避免两个视图内容不一致。
     function updateDetailsProfile() {
         document.getElementById('detailsPageName').textContent = nodes.display.name.textContent;
         document.getElementById('detailsPageBio').textContent = nodes.display.bio.textContent;
@@ -595,6 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function syncGpaBarHeights() {
+        // 使用相对缩放，让相近的绩点也能在图表上看出层次。
         const gpaValues = gpaBarWrappers
             .map(wrapper => Number(wrapper.dataset.gpa))
             .filter(value => Number.isFinite(value));
@@ -716,6 +723,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function activateDetailsTab(target) {
+        // 统一处理标签切换，保证每个模块都能正确重置自己的动画状态。
         tabBtns.forEach(b => b.classList.remove('active'));
         tabContents.forEach(c => c.classList.remove('active'));
 
@@ -768,7 +776,7 @@ document.addEventListener('DOMContentLoaded', () => {
         mainContainer.classList.remove('hidden');
     };
 
-    // Details 页面 Tabs 切换
+    // 详情页标签切换
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
     
@@ -838,7 +846,7 @@ document.addEventListener('DOMContentLoaded', () => {
         bar.addEventListener('mouseleave', hideGpaTooltip);
     });
 
-    // 打字机效果
+    // --- 自我介绍模块的打字机效果 -----------------------------------------------
     let typewriterTimeout;
     function startTypewriter() {
         const fullText = personalTextArea.value;
@@ -880,7 +888,7 @@ document.addEventListener('DOMContentLoaded', () => {
         typeNextCharacter();
     }
 
-    // 数据初始化
+    // --- 页面初始化与本地数据恢复 ------------------------------------------------
     (function load() {
         const data = JSON.parse(localStorage.getItem('profile_data'));
         if (data) {

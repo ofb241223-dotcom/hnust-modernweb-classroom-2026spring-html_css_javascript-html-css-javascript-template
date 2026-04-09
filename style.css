@@ -1,3 +1,4 @@
+/* 浅色主题变量 */
 :root {
     --bg-color: #f0f2f5;
     --page-background: url('assets/background/background-light.jpg');
@@ -25,6 +26,7 @@
     --home-icon-shell: #efefef;
 }
 
+/* 深色主题变量覆写 */
 .dark-mode {
     --bg-color: #000000;
     --page-background: url('assets/background/background-dark.jpg');
@@ -46,6 +48,7 @@
     --input-border: #3a3a3c;
 }
 
+/* 全局重置与页面基础布局 */
 * {
     margin: 0;
     padding: 0;
@@ -78,6 +81,7 @@ body {
     z-index: 1;
 }
 
+/* 首页卡片主体 */
 .main-container {
     position: relative;
     z-index: 10;
@@ -119,6 +123,7 @@ body {
 }
 
 .hero-panel,
+/* 首页联系方式卡片 */
 .contacts-panel {
     background: var(--home-surface);
     border-radius: 32px;
@@ -349,6 +354,7 @@ body {
 
 .theme-switcher:hover { transform: rotate(60deg); }
 
+/* 小屏幕下的响应式调整 */
 @media (max-width: 900px) {
     .main-container {
         max-width: 760px;
@@ -422,7 +428,7 @@ body {
     }
 }
 
-/* Edit Panel Fixes */
+/* 编辑面板与头像选择弹窗 */
 .edit-panel {
     position: absolute;
     inset: 0;
@@ -615,7 +621,7 @@ body {
 .btn-save { flex: 2; padding: 16px; background-color: #27ae60; color: white; border: none; border-radius: 14px; font-weight: 900; cursor: pointer; }
 .btn-cancel { flex: 1; padding: 16px; background-color: var(--btn-secondary-bg); color: var(--btn-secondary-text); border: none; border-radius: 14px; font-weight: 800; cursor: pointer; }
 
-/* Details Page */
+/* 详情页整体结构与侧边导航 */
 .details-page {
     position: fixed;
     inset: 0;
@@ -737,6 +743,7 @@ body {
 .details-avatar-box img { width: 100%; height: 100%; object-fit: cover; }
 .details-initials { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; font-size: 22px; font-weight: 800; color: var(--text-main); }
 
+/* 详情页三个模块共用的悬浮主卡片 */
 .details-content-box {
     width: min(100%, 960px);
     height: min(650px, calc(100vh - 118px));
@@ -757,9 +764,10 @@ body {
 .tab-content.active { display: flex; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
+/* 三个详情页模块共用的标题样式 */
 .tab-content h2 { font-size: 36px; font-weight: 900; color: var(--text-main); margin-bottom: 34px; }
 
-/* Personal Info Tab */
+/* 自我介绍模块 */
 .personal-editor-container { flex: 1; position: relative; background: var(--input-fill); border-radius: 24px; padding: 34px; border: 1px solid var(--input-border); }
 .typewriter-text { font-family: 'Monaco', monospace; font-size: 17px; font-weight: 700; line-height: 1.85; letter-spacing: 0.01em; color: var(--text-main); white-space: pre-wrap; position: absolute; inset: 34px; pointer-events: none; }
 .personal-textarea { width: 100%; height: 100%; background: transparent; border: none; resize: none; font-family: 'Monaco', monospace; font-size: 17px; font-weight: 700; line-height: 1.85; letter-spacing: 0.01em; color: var(--text-main); outline: none; opacity: 0; transition: opacity 0.3s; }
@@ -777,7 +785,7 @@ body {
 }
 @keyframes blink { 50% { opacity: 0; } }
 
-/* GPA Tab */
+/* 绩点图表模块 */
 .gpa-chart {
     flex: 1;
     position: relative;
@@ -897,7 +905,7 @@ body {
     color: var(--text-main);
 }
 
-/* Awards Tab */
+/* 获奖与证书模块 */
 .awards-gallery {
     flex: 1;
     display: flex;
@@ -1002,6 +1010,7 @@ body {
 
 .awards-upload-btn:hover { transform: translateY(-2px); }
 
+/* 奖项图片全屏预览弹窗 */
 .award-preview-modal {
     position: fixed;
     inset: 0;
