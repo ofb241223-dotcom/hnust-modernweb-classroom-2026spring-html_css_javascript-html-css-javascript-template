@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高级Web作业：个人信息卡片</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-mode">
+    <canvas id="rippleCanvas" class="ripple-canvas" aria-hidden="true"></canvas>
+    <div class="main-container" id="mainContainer">
+        <div class="profile-card" id="profileCard">
+            <div class="profile-card-shell">
+                <section class="hero-panel">
+                    <div class="hero-topbar">
+                        <button id="editToggleBtn" type="button" class="card-link-btn">Edit</button>
+                        <button id="viewDetailsBtn" type="button" class="card-link-btn">Follow for more</button>
+                    </div>
+
+                    <div class="hero-center">
+                        <div class="avatar-wrapper hero-avatar" id="avatarClickRegion">
+                            <img id="avatarPreview" alt="Avatar" style="display: none;">
+                            <div id="avatarInitials" class="avatar-initials">欧</div>
+                            <div class="avatar-hover-label">Change avatar</div>
+                            <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                        </div>
+                        <h1 id="displayName" class="hero-name">欧航</h1>
+                        <p id="displayBio" class="hero-subtitle">Senior Software Engineer</p>
+                    </div>
+                </section>
+
+                <section class="contacts-panel">
+                    <div class="contact-grid">
+                        <article class="contact-card">
+                            <div class="contact-icon-shell">
+                                <img class="contact-icon-image" src="assets/contact-icons/whatsapp-figma.png" alt="" aria-hidden="true">
+                            </div>
+                            <h2 class="contact-label">WhatsApp</h2>
+                            <p id="displayPhone" class="contact-value">19310291126</p>
+                        </article>
+
+                        <article class="contact-card">
+                            <div class="contact-icon-shell">
+                                <img class="contact-icon-image contact-icon-email" src="assets/contact-icons/email-figma.png" alt="" aria-hidden="true">
+                            </div>
+                            <h2 class="contact-label">Email</h2>
+                            <p id="displayEmail" class="contact-value">ofb241223@gmail.com</p>
+                        </article>
+
+                        <article class="contact-card">
+                            <div class="contact-icon-shell">
+                                <img class="contact-icon-image contact-icon-school" src="assets/contact-icons/school-badge.svg" alt="" aria-hidden="true">
+                            </div>
+                            <h2 class="contact-label">School</h2>
+                            <p id="displaySchool" class="contact-value">HNUST</p>
+                        </article>
+                    </div>
+
+                    <span id="displayLocation" class="visually-hidden">San Francisco, CA</span>
+                </section>
+            </div>
+
+            <!-- 编辑弹窗 -->
+            <div id="editPanel" class="edit-panel hidden">
+                <h3>编辑资料</h3>
+                <div class="form-grid">
+                    <div class="input-item">
+                        <label>姓名</label>
+                        <input type="text" id="nameInput">
+                        <p id="nameError" class="input-error" aria-live="polite"></p>
+                    </div>
+                    <div class="input-item"><label>职位/简介</label><input type="text" id="bioInput"></div>
+                    <div class="input-item">
+                        <label>邮箱</label>
+                        <input type="text" id="emailInput">
+                        <p id="emailError" class="input-error" aria-live="polite"></p>
+                    </div>
+                    <div class="input-item">
+                        <label>电话</label>
+                        <input type="text" id="phoneInput">
+                        <p id="phoneError" class="input-error" aria-live="polite"></p>
+                    </div>
+                    <div class="input-item"><label>学校</label><input type="text" id="schoolInput"></div>
+                </div>
+                <div class="edit-actions">
+                    <button id="saveBtn" class="btn-save">保存</button>
+                    <button id="cancelBtn" class="btn-cancel">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="avatarPicker" class="avatar-picker" aria-hidden="true">
+        <div class="avatar-picker-dialog" role="dialog" aria-modal="true" aria-labelledby="avatarPickerTitle">
+            <div class="avatar-picker-header">
+                <div>
+                    <h3 id="avatarPickerTitle">选择头像</h3>
+                    <p>先选 Logo 预设，也可以在最后改用本地图片。</p>
+                </div>
+                <button id="avatarPickerClose" type="button" class="avatar-picker-close" aria-label="关闭头像选择框">×</button>
+            </div>
+            <div id="avatarPresetGrid" class="avatar-preset-grid"></div>
+            <div class="avatar-picker-actions">
+                <button id="avatarResetBtn" type="button" class="avatar-reset-btn">恢复字母头像</button>
+                <button id="avatarUploadBtn" type="button" class="avatar-upload-btn">使用本地图片</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 详细信息页面 -->
+    <div id="detailsPage" class="details-page">
+        <!-- 左上角返回箭头 -->
+        <button id="backToCardBtn" class="back-btn" title="返回卡片页面">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </button>
+
+        <!-- 左侧侧边栏 -->
+        <div class="details-sidebar">
+            <button class="tab-btn active" data-tab="personal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                Self Introduction
+            </button>
+            <button class="tab-btn" data-tab="gpa">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                GPA for each semester
+            </button>
+            <button class="tab-btn" data-tab="awards">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                Awards & Certificates
+            </button>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="details-main" id="antigravityWrapper">
+            <!-- 右上角用户信息 -->
+            <div class="details-profile-header">
+                <div class="details-profile-info">
+                    <h3 id="detailsPageName">欧航</h3>
+                    <p id="detailsPageBio">Senior Software Engineer</p>
+                </div>
+                <div id="detailsAvatarTrigger" class="details-avatar-box" title="更换头像" role="button" tabindex="0" aria-label="更换头像">
+                    <img id="detailsPageAvatar" alt="Avatar" style="display:none;">
+                    <div id="detailsPageInitials" class="details-initials">欧</div>
+                </div>
+            </div>
+
+            <!-- Antigravity 交互容器 -->
+            <div class="details-content-box" id="antigravityBox">
+                <!-- 1. 个人信息 -->
+                <div id="tab-personal" class="tab-content active">
+                    <h2>Self Introduction</h2>
+                    <div class="personal-editor-container">
+                        <div id="typewriterText" class="typewriter-text"></div>
+                        <textarea id="personalTextArea" class="personal-textarea">Hi, I'm Ou Hang.
+I'm a Senior Software Engineer with a passion for building robust web applications.
+
+I have extensive experience in modern web frameworks.
+My goal is to create seamless user experiences and maintainable codebases.</textarea>
+                    </div>
+                </div>
+
+                <!-- 2. GPA -->
+                <div id="tab-gpa" class="tab-content">
+                    <h2>GPA Performance</h2>
+                    <div class="gpa-chart">
+                        <div class="gpa-bar-wrapper" style="--delay: 0s;" data-gpa="3.64" data-grade-rank="30" data-grade-total="271" data-class-rank="3" data-class-total="27">
+                            <div class="gpa-bar"><span class="gpa-val">3.64</span></div>
+                            <div class="gpa-label">大一上</div>
+                        </div>
+                        <div class="gpa-bar-wrapper" style="--delay: 0.08s;" data-gpa="3.92" data-grade-rank="6" data-grade-total="271" data-class-rank="1" data-class-total="29">
+                            <div class="gpa-bar"><span class="gpa-val">3.92</span></div>
+                            <div class="gpa-label">大一下</div>
+                        </div>
+                        <div class="gpa-bar-wrapper" style="--delay: 0.16s;" data-gpa="4.0" data-grade-rank="1" data-grade-total="271" data-class-rank="1" data-class-total="29">
+                            <div class="gpa-bar"><span class="gpa-val">4.0</span></div>
+                            <div class="gpa-label">大二上</div>
+                        </div>
+                        <div id="gpaHoverTooltip" class="gpa-tooltip" aria-hidden="true">
+                            <span id="gpaTooltipGradeRank"></span>
+                            <span id="gpaTooltipClassRank"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Awards -->
+                <div id="tab-awards" class="tab-content">
+                    <h2>Awards & Certificates</h2>
+                    <div class="awards-gallery">
+                        <div id="awardsGrid" class="awards-grid"></div>
+                        <div class="awards-pagination">
+                            <div class="awards-pagination-group">
+                                <button id="awardsPrevBtn" type="button" class="awards-page-btn">上一页</button>
+                                <div id="awardsPageInfo" class="awards-page-info"></div>
+                                <button id="awardsNextBtn" type="button" class="awards-page-btn">下一页</button>
+                            </div>
+                            <button id="awardsUploadBtn" type="button" class="awards-upload-btn">添加奖项</button>
+                            <input id="awardsUploadInput" type="file" accept="image/*" multiple style="display: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="awardPreviewModal" class="award-preview-modal" aria-hidden="true">
+        <div class="award-preview-dialog" role="dialog" aria-modal="true" aria-label="奖项预览">
+            <button id="awardPreviewPrev" type="button" class="award-preview-nav award-preview-prev" aria-label="查看上一张奖项">‹</button>
+            <button id="awardPreviewNext" type="button" class="award-preview-nav award-preview-next" aria-label="查看下一张奖项">›</button>
+            <button id="awardPreviewClose" type="button" class="award-preview-close" aria-label="关闭奖项预览">×</button>
+            <img id="awardPreviewImage" class="award-preview-image" alt="奖项预览">
+            <div id="awardPreviewCount" class="award-preview-count"></div>
+        </div>
+    </div>
+
+    <!-- 主题切换按钮 -->
+    <button id="themeToggleBtn" class="theme-switcher">☀️</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
