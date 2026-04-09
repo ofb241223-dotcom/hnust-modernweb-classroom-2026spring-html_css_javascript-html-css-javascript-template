@@ -30,11 +30,28 @@
 </table>
 
 ### 其他交互演示
-- [编辑个人信息演示](assets/readme/edit-personal_information.webm)
-- [主题切换演示](assets/readme/change-background.webm)
-- [详情页整体演示视频](assets/readme/details-overview.webm)
-- [GPA 模块演示视频](assets/readme/gpa-module.webm)
-- [Awards 模块演示视频](assets/readme/awards-module.webm)
+<table align="center">
+  <tr>
+    <td align="center"><img src="assets/readme/edit-personal_information.gif" alt="编辑个人信息演示" width="300"></td>
+    <td align="center"><img src="assets/readme/change-background.gif" alt="主题切换演示" width="300"></td>
+    <td align="center"><img src="assets/readme/details-overview.gif" alt="详情页整体演示" width="300"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>编辑个人信息演示</strong></td>
+    <td align="center"><strong>主题切换演示</strong></td>
+    <td align="center"><strong>详情页整体演示</strong></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="assets/readme/gpa-module.gif" alt="GPA 模块演示" width="300"></td>
+    <td align="center"><img src="assets/readme/awards-module.gif" alt="Awards 模块演示" width="300"></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>GPA 模块演示</strong></td>
+    <td align="center"><strong>Awards 模块演示</strong></td>
+    <td></td>
+  </tr>
+</table>
 
 ## 功能实现
 - 首页采用卡片式布局，展示姓名、简介、电话、邮箱和学校信息。
